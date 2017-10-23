@@ -29,11 +29,36 @@
 package edu.upenn.cis.cis455.m1.server.interfaces;
 
 import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
+import edu.upenn.cis.cis455.m1.server.Cookie;
 
 public abstract class Response {
     protected int statusCode = 200;
     protected byte[] body;
-    protected String contentType = null;//"text/plain";
+    protected String contentType = "text/plain";
+    private int contentLength = -1;
+    protected Map<String, String> headers = new HashMap<String, String>();    protected String redirectLoc = null;
+    protected Set<Cookie> cookies = new HashSet<Cookie>();
+
+    public void contentLength(int length) {
+        contentLength = length;
+    }
+    
+    /*
+     * Return the theoretical content length (for HEAD)
+     */
+    public int contentLength() {
+        if (contentLength != -1) {
+            return contentLength;
+        } else {
+            return body.length;
+        }
+        
+    }
     
     public int status() {
         return statusCode;

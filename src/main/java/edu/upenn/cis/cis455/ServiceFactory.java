@@ -7,6 +7,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import edu.upenn.cis.cis455.m1.server.WebServiceController;
+import edu.upenn.cis.cis455.m1.server.implementations.HttpRequest;
+import edu.upenn.cis.cis455.m1.server.implementations.HttpResponse;
+import edu.upenn.cis.cis455.m1.server.implementations.HttpSession;
+import edu.upenn.cis.cis455.m1.server.implementations.RequestHandler;
 import edu.upenn.cis.cis455.m1.server.interfaces.WebService;
 import edu.upenn.cis.cis455.m1.server.interfaces.HttpRequestHandler;
 import edu.upenn.cis.cis455.m1.server.interfaces.Request;
@@ -20,7 +25,7 @@ public class ServiceFactory {
      * Get the HTTP server associated with port 8080
      */
     public static WebService getServerInstance() {
-        return null;
+        return WebServiceController.getSingleton();
     }
     
     /**
@@ -31,35 +36,39 @@ public class ServiceFactory {
                          boolean keepAlive,
                          Map<String, String> headers,
                          Map<String, List<String>> parms) {
-        return null;
+        return new HttpRequest(socket, uri, keepAlive, headers, parms);
     }
     
     /**
      * Gets a request handler for files (i.e., static content) or dynamic content
      */
     public static HttpRequestHandler createRequestHandlerInstance(Path serverRoot) {
-        return null;
+        return new RequestHandler(serverRoot);
     }
 
     /**
      * Gets a new HTTP Response object
      */
     public static Response createResponse() {
-        return null;
+        return new HttpResponse();
     }
 
     /**
      * Creates a blank session ID and registers a Session object for the request
      */
     public static String createSession() {
-        return null;
+        HttpSession session = new HttpSession();
+        String id = session.id();
+        WebServiceController.getServer().addSession(id, session);
+        return id;
     }
     
     /**
      * Looks up a session by ID and updates / returns it
      */
-    public static Session getSession(String id) {
-        
-        return null;
+    public static Session getSession(String id) {        
+        HttpSession session = WebServiceController.getServer().getSession(id);
+        session.access();
+        return session;
     }
 }

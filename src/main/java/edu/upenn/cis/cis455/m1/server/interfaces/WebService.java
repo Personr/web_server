@@ -44,6 +44,10 @@ public abstract class WebService {
 
     protected HttpServer basicServer;
     
+     public HttpServer getServer() {
+        return basicServer;
+    }
+    
     /**
      * Launches the Web server thread pool and the listener
      */
@@ -103,6 +107,53 @@ public abstract class WebService {
      * Handle an HTTP GET request to the path
      */
     public abstract void get(String path, Route route);
+    
+    /**
+     * Handle an HTTP POST request to the path
+     */
+    public abstract void post(String path, Route route);
+
+    /**
+     * Handle an HTTP PUT request to the path
+     */
+    public abstract void put(String path, Route route);
+
+    /**
+     * Handle an HTTP DELETE request to the path
+     */
+    public abstract void delete(String path, Route route);
+
+    /**
+     * Handle an HTTP HEAD request to the path
+     */
+    public abstract void head(String path, Route route);
+
+    /**
+     * Handle an HTTP OPTIONS request to the path
+     */
+    public abstract void options(String path, Route route);
+    
+    ///////////////////////////////////////////////////
+    // HTTP request filtering
+    ///////////////////////////////////////////////////
+    
+    /**
+     * Add filters that get called before a request
+     */
+    public abstract void before(Filter filter);
+
+    /**
+     * Add filters that get called after a request
+     */
+    public abstract void after(Filter filter);
+    /**
+     * Add filters that get called before a request
+     */
+    public abstract void before(String path, String acceptType, Filter filter);
+    /**
+     * Add filters that get called after a request
+     */
+    public abstract void after(String path, String acceptType, Filter filter);
 
     ////////////////////////////////////////////
     // Server configuration
